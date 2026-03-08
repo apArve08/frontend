@@ -55,6 +55,12 @@ function Navbar() {
               >
                 Dashboard
               </Link>
+              <Link
+                href="/schedules"
+                className="text-gray-300 hover:text-white hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Schedules
+              </Link>
             </div>
           </div>
         </div>

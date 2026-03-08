@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Activity, Apple, HeartPulse } from "lucide-react";
+import { Activity, Apple, HeartPulse, Calendar } from "lucide-react";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Run Analyzer */}
           <Link href="/analyze-run" className="group block">
             <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8 h-full transition-all duration-300 hover:scale-105 hover:border-blue-500 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]">
@@ -22,10 +22,10 @@ export default function Home() {
                 <Activity size={32} />
               </div>
               <h2 className="text-2xl font-bold mb-4 text-white">Run Analyzer</h2>
-              <p className="text-gray-400 mb-6">
+              <p className="text-gray-400 mb-6 text-sm">
                 Upload your Strava JSON data. Get AI insights on pace trends, fatigue detection, and training load.
               </p>
-              <div className="flex items-center text-blue-500 font-semibold">
+              <div className="flex items-center text-blue-500 font-semibold text-sm">
                 Start Analysis &rarr;
               </div>
             </div>
@@ -38,10 +38,10 @@ export default function Home() {
                 <Apple size={32} />
               </div>
               <h2 className="text-2xl font-bold mb-4 text-white">Meal AI</h2>
-              <p className="text-gray-400 mb-6">
+              <p className="text-gray-400 mb-6 text-sm">
                 Snap a photo of your Nasi Lemak or Roti Canai. Get instant nutritional breakdown & recovery advice.
               </p>
-              <div className="flex items-center text-orange-500 font-semibold">
+              <div className="flex items-center text-orange-500 font-semibold text-sm">
                 Analyze Meal &rarr;
               </div>
             </div>
@@ -53,12 +53,28 @@ export default function Home() {
               <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6 text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
                 <HeartPulse size={32} />
               </div>
-              <h2 className="text-2xl font-bold mb-4 text-white">Health Dashboard</h2>
-              <p className="text-gray-400 mb-6">
-                Track your VO2 Max, weekly mileage, and recovery score in one comprehensive athlete dashboard.
+              <h2 className="text-2xl font-bold mb-4 text-white">Athlete Profile</h2>
+              <p className="text-gray-400 mb-6 text-sm">
+                Track your VO2 Max, weekly mileage, and recovery score. Generate personalized fitness/meal plans.
               </p>
-              <div className="flex items-center text-green-500 font-semibold">
+              <div className="flex items-center text-green-500 font-semibold text-sm">
                 View Dashboard &rarr;
+              </div>
+            </div>
+          </Link>
+
+          {/* Schedules */}
+          <Link href="/schedules" className="group block">
+            <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8 h-full transition-all duration-300 hover:scale-105 hover:border-purple-500 hover:shadow-[0_0_40px_-10px_rgba(168,85,247,0.5)]">
+              <div className="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                <Calendar size={32} />
+              </div>
+              <h2 className="text-2xl font-bold mb-4 text-white">Schedules</h2>
+              <p className="text-gray-400 mb-6 text-sm">
+                Add AI suggested activities, track your calendar, complete tasks, and view your mileage trends.
+              </p>
+              <div className="flex items-center text-purple-500 font-semibold text-sm">
+                Open Calendar &rarr;
               </div>
             </div>
           </Link>

@@ -162,14 +162,48 @@ export default function FitnessPlanner() {
                         {result}
                     </div>
 
-                    <button
-                        onClick={() => {
-                            setResult(null);
-                        }}
-                        className="mt-6 w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-xl transition-all"
-                    >
-                        Create Another Plan
-                    </button>
+                    <div className="mt-8 bg-black/40 p-6 rounded-xl border border-indigo-500/30">
+                        <h4 className="font-bold text-white mb-4">Quick Add to Schedule</h4>
+                        <p className="text-gray-400 text-sm mb-4">Pick an activity suggested above and add it directly to your upcoming schedule.</p>
+
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.currentTarget);
+                            const title = formData.get('title') as string;
+                            const dist = formData.get('dist') as string;
+                            const date = formData.get('date') as string;
+                            if (!title || !date) return;
+
+                            await supabase.from('schedules').insert([{
+                                title: title,
+                                distance_km: Number(dist) || 0,
+                                activity_date: date,
+                                completed: false
+                            }]);
+
+                            alert("Added to schedule successfully!");
+                            (e.target as HTMLFormElement).reset();
+                        }} className="flex flex-col md:flex-row gap-3">
+                            <input name="title" required placeholder="Activity (e.g. 5K easy run)" className="flex-2 bg-gray-800 border border-gray-700 rounded-lg p-3 text-sm text-white focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            <input name="dist" type="number" step="0.1" placeholder="Dist (km)" className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-3 text-sm text-white focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            <input name="date" required type="date" className="flex-1 bg-gray-800 border border-gray-700 rounded-lg p-3 text-sm text-white focus:ring-1 focus:ring-indigo-500 outline-none" />
+                            <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                                Add
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="flex gap-4 mt-6">
+                        <button
+                            onClick={() => setResult(null)}
+                            className="flex-1 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-xl transition-all"
+                        >
+                            Create Another Plan
+                        </button>
+                        <a href="/schedules" className="flex-1 text-center bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-xl transition-all">
+                            View My Schedules
+                        </a>
+                    </div>
                 </div>
             )}
         </div>
