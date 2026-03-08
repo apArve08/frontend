@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Upload, Image as ImageIcon, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function UploadComponent() {
     const [file, setFile] = useState<File | null>(null);
@@ -30,20 +31,39 @@ export default function UploadComponent() {
         const formData = new FormData();
         formData.append("file", file);
 
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+        console.log("Analyzing meal using API:", apiUrl);
+
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/analyze-meal`, {
+            const response = await fetch(`${apiUrl}/analyze-meal`, {
                 method: "POST",
                 body: formData,
             });
 
             if (!response.ok) {
-                throw new Error("Failed to analyze meal");
+                const errData = await response.json().catch(() => null);
+                throw new Error(errData?.detail || "Failed to analyze meal");
             }
-
             const data = await response.json();
             setResult(data.analysis);
-        } catch (err: any) {
-            setError(err.message || "An error occurred");
+
+            // Save to Supabase
+            try {
+                const { error: dbError } = await supabase
+                    .from('meals')
+                    .insert([{
+                        ai_analysis: data.analysis
+                    }]);
+                if (dbError) console.error("Supabase insert error:", dbError);
+            } catch (dbErr) {
+                console.error("Supabase save failed:", dbErr);
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message || "An error occurred");
+            } else {
+                setError("An error occurred");
+            }
         } finally {
             setLoading(false);
         }
@@ -113,9 +133,20 @@ export default function UploadComponent() {
                         <span className="bg-orange-500 w-2 h-6 rounded-full mr-3 text-transparent">-</span>
                         Nutritional AI Insights
                     </h3>
-                    <div className="bg-gray-800 rounded-xl p-6 text-gray-300 border border-gray-700 leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-gray-800 rounded-xl p-6 text-gray-300 border border-gray-700 leading-relaxed whitespace-pre-wrap mb-6">
                         {result}
                     </div>
+
+                    <button
+                        onClick={() => {
+                            setResult(null);
+                            setFile(null);
+                            setPreviewUrl(null);
+                        }}
+                        className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-3 px-4 rounded-xl transition-all"
+                    >
+                        Analyze Another Meal
+                    </button>
                 </div>
             )}
         </div>

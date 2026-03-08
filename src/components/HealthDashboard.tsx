@@ -19,12 +19,17 @@ export default function HealthDashboard() {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/health-summary`);
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+            const response = await fetch(`${apiUrl}/health-summary`);
             if (!response.ok) throw new Error("Failed to fetch health data");
             const result = await response.json();
             setData(result);
-        } catch (err: any) {
-            setError(err.message || "An error occurred");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message || "An error occurred");
+            } else {
+                setError("An error occurred");
+            }
         } finally {
             setLoading(false);
         }
