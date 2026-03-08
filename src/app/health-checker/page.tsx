@@ -1,4 +1,5 @@
 import HealthDashboard from "@/components/HealthDashboard";
+import FitnessPlanner from "@/components/FitnessPlanner";
 
 export const metadata = {
     title: "Health Checker | Running Analyzer",
@@ -13,11 +14,14 @@ export default function HealthCheckerPage() {
                         Athlete Dashboard
                     </h1>
                     <p className="text-gray-400 text-lg">
-                        Track your performance metrics, mileage load, and physical recovery.
+                        Track your performance metrics, mileage load, physical recovery, and create specialized plans.
                     </p>
                 </div>
 
-                <HealthDashboard />
+                <div className="space-y-12">
+                    <HealthDashboard />
+                    <FitnessPlanner />
+                </div>
             </div>
         </div>
     );

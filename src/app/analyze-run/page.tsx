@@ -6,7 +6,20 @@ import { Activity, Plus, Loader2, Play, Calendar } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default function RunDashboardPage() {
-    const [runs, setRuns] = useState<any[]>([]);
+    type RunRecord = {
+        id: string;
+        created_at: string;
+        mode: string;
+        raw_data: {
+            manual_data?: {
+                distance_km?: number;
+                calculated_pace?: string;
+                type?: string;
+            }
+        } | null;
+        ai_analysis: string;
+    };
+    const [runs, setRuns] = useState<RunRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
